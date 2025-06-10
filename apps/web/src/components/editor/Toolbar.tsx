@@ -6,15 +6,12 @@ import { toast } from "sonner";
 
 interface ToolbarProps {
   onRefresh: () => void;
+  onCommit: () => void;
 }
 
-export function Toolbar({ onRefresh }: ToolbarProps) {
+export function Toolbar({ onRefresh, onCommit }: ToolbarProps) {
   const handleSave = () => {
     toast.success("Resume saved");
-  };
-
-  const handleShare = () => {
-    toast.success("Share link copied to clipboard");
   };
 
   return (
@@ -30,7 +27,7 @@ export function Toolbar({ onRefresh }: ToolbarProps) {
           <RefreshCw className="h-4 w-4 mr-2" />
           Refresh Preview
         </Button>
-        <Button size="sm" onClick={handleShare}>
+        <Button size="sm" onClick={onCommit}>
           <Share2 className="h-4 w-4 mr-2" />
           Get Shareable Link
         </Button>
