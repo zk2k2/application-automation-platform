@@ -1,4 +1,3 @@
-// app/careers/page.tsx
 "use client";
 
 import { useState, useEffect, useRef } from "react";
@@ -12,6 +11,7 @@ import { Copy, Eye } from "lucide-react";
 interface ResumeItem {
   s3_key: string;
   company: string;
+  position: string;
   timestamp: string;
   short_url: string;
 }
@@ -30,12 +30,15 @@ export default function CareersPage() {
   const [attachments, setAttachments] = useState<Attachment[]>([]);
   const bodyRef = useRef<HTMLTextAreaElement>(null);
 
-  // Load all resumes
+  const handleRemoveAll = () => {
+    setAttachments([]);
+    toast(`All attachments removed.`);
+  };
+
   useEffect(() => {
     fetch("/api/fetch-resumes")
       .then((res) => res.json())
       .then((data) => {
-        // Normalize data shape
         if (Array.isArray(data)) {
           setResumes(data);
         } else if (data.items && Array.isArray(data.items)) {
@@ -59,7 +62,6 @@ export default function CareersPage() {
       .catch(() => toast.error("Copy failed"));
   };
 
-  // Fetch and attach PDF from S3
   const handleAttach = async (item: ResumeItem) => {
     try {
       const res = await fetch(
@@ -68,7 +70,25 @@ export default function CareersPage() {
       if (!res.ok) throw new Error();
       const blob = await res.blob();
       const filename = item.s3_key.split("/").pop() || "resume.pdf";
+
       setAttachments((prev) => [...prev, { filename, data: blob }]);
+
+      setSubject(
+        `[ Application for ${item.position} Role at ${item.company} ]`
+      );
+      setBody(`Dear Hiring Team,
+
+I hope this e-mail finds you well.
+
+I am reaching out to apply for the ${item.position} Role at ${item.company}.
+
+I am very excited about this opportunity and believe my skills and experience make me an excellent fit.
+
+You will find my resume attached to this e-mail.
+
+Regards,
+${process.env.NEXT_PUBLIC_SENDER_FIRSTNAME} ${process.env.NEXT_PUBLIC_SENDER_LASTNAME}`);
+
       toast.success(`Attached ${filename}`);
     } catch {
       toast.error("Failed to attach resume");
@@ -85,7 +105,6 @@ export default function CareersPage() {
       return;
     }
     try {
-      // Prepare form data for attachments
       const form = new FormData();
       form.append("to", to);
       form.append("subject", subject);
@@ -113,7 +132,6 @@ export default function CareersPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="grid grid-cols-2 gap-6">
-        {/* LEFT: Resumes Table */}
         <Card className="h-[600px] flex flex-col">
           <CardHeader>
             <CardTitle>My Resumes</CardTitle>
@@ -127,7 +145,8 @@ export default function CareersPage() {
               <table className="w-full text-left">
                 <thead>
                   <tr>
-                    <th className="pb-2">Company</th>
+                    <th className="pb-2 pr-4">Company</th>
+                    <th className="pb-2">Position</th>
                     <th className="pb-2">Date</th>
                     <th className="pb-2">Actions</th>
                   </tr>
@@ -136,6 +155,7 @@ export default function CareersPage() {
                   {resumes.map((r) => (
                     <tr key={r.s3_key} className="border-t">
                       <td className="py-2">{r.company}</td>
+                      <td className="py-2">{r.position}</td>
                       <td className="py-2">
                         {r.timestamp.replace(
                           /^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})Z$/,
@@ -151,13 +171,7 @@ export default function CareersPage() {
                           <Copy className="w-4 h-4 mr-1" />
                           Copy
                         </Button>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleAttach(r)}
-                        >
-                          Attach
-                        </Button>
+
                         <Button
                           size="sm"
                           variant="outline"
@@ -165,6 +179,9 @@ export default function CareersPage() {
                         >
                           <Eye className="w-4 h-4 mr-1" />
                           View
+                        </Button>
+                        <Button size="sm" onClick={() => handleAttach(r)}>
+                          Attach
                         </Button>
                       </td>
                     </tr>
@@ -175,7 +192,6 @@ export default function CareersPage() {
           </CardContent>
         </Card>
 
-        {/* RIGHT: Email Composer */}
         <Card className="h-[600px] flex flex-col">
           <CardHeader>
             <CardTitle>Compose Email</CardTitle>
@@ -208,20 +224,32 @@ export default function CareersPage() {
               />
             </div>
             <div className="flex flex-col gap-2">
-              {attachments.length > 0 && (
-                <div>
-                  <p className="text-sm font-medium">Attachments:</p>
-                  <ul className="list-disc list-inside text-sm">
-                    {attachments.map((att) => (
-                      <li key={att.filename}>{att.filename}</li>
-                    ))}
-                  </ul>
+              <div className="flex justify-between items-start w-full">
+                {attachments.length > 0 && (
+                  <div className="flex-1">
+                    <p className="text-sm font-medium">Attachments:</p>
+                    <ul className="list-disc list-outside pl-5 text-sm">
+                      {attachments.map((att) => (
+                        <li key={att.filename}>{att.filename}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                <div className="flex gap-2  w-full justify-end">
+                  {attachments.length > 0 && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={handleRemoveAll}
+                    >
+                      Remove Attachments
+                    </Button>
+                  )}
+                  <Button size="sm" onClick={handleSend}>
+                    Send
+                  </Button>
                 </div>
-              )}
-              <div className="flex justify-end">
-                <Button size="sm" onClick={handleSend}>
-                  Send
-                </Button>
               </div>
             </div>
           </CardContent>

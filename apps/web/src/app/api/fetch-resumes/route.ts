@@ -14,9 +14,10 @@ export async function GET() {
     const result = await ddb
       .scan({
         TableName: DDB_TABLE,
-        ProjectionExpression: "s3_key, company, #ts, short_url",
+        ProjectionExpression: "s3_key, company, #p, #ts, short_url",
         ExpressionAttributeNames: {
           "#ts": "timestamp",
+          "#p": "position",
         },
       })
       .promise();

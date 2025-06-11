@@ -1,4 +1,3 @@
-// /api/preview/route.ts
 import { NextResponse } from "next/server";
 import { execFile } from "child_process";
 import { promisify } from "util";
@@ -19,7 +18,6 @@ export async function POST(request: Request) {
   await fs.writeFile(texFile, latexContent);
 
   try {
-    // Run pdflatex twice to resolve references
     await run("pdflatex", [
       "-halt-on-error",
       "-output-directory",
@@ -45,6 +43,5 @@ export async function POST(request: Request) {
       { status: 500 }
     );
   } finally {
-    // optional: clean up tempDir
   }
 }

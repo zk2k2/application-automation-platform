@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Editor from "react-simple-code-editor";
 import Prism from "@/prism";
 import { useDebounce } from "@/lib/hooks/use-debounce";
+import { toast } from "sonner";
 
 interface EditorPaneProps {
   initialContent?: string;
@@ -32,6 +33,9 @@ export function EditorPane({
 
         const resumeContent = await response.text();
         setContent(initialContent || resumeContent);
+        toast.success("Successfully fetched resume code from GitHub!", {
+          id: "fetch-resume-from-github",
+        });
       } catch (err) {
         console.error("Error fetching resume:", err);
         setError(

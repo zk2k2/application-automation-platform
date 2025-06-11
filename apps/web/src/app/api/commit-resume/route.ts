@@ -119,10 +119,11 @@ export async function POST(req: Request) {
 
     const company = commitMessage
       .replace(/^Applying to\s*/i, "")
-      .replace(/\s+at\s+\d{8}T\d{6}Z$/, "")
-      .toLowerCase()
+      .replace(/\s+as\s+.*?\s+at\s+\d{8}T\d{6}Z$/i, "")
+      .toUpperCase()
       .replace(/\s+/g, "");
-    const filename = `resume-${timestamp}-${company}.pdf`;
+
+    const filename = `RESUME_${company}_${timestamp}.pdf`;
     console.log(`Generated filename: ${filename}`);
     const s3Key = `resumes/${filename}`;
 

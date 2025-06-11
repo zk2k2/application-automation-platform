@@ -54,7 +54,7 @@ const EditorPage: FC = () => {
                 onContentChange={handleContentChange}
               />
             </ResizablePanel>
-            <ResizableHandle withHandle />
+            <ResizableHandle withHandle className="z-0" />
             <ResizablePanel defaultSize={50} minSize={30}>
               <PreviewPane latexContent={latexContent} key={triggerPreview} />
             </ResizablePanel>

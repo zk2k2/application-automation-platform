@@ -1,19 +1,31 @@
-// src/app/page.tsx
+"use client";
 import { Button } from "@/components/ui/button";
 import { FC } from "react";
 
 const HomePage: FC = () => {
-  const userName = "John"; // you can fetch this from your auth/session
+  const userName = "Zied";
+
+  const navigateToEditor = () => {
+    window.location.href = "/editor";
+  };
+
+  const navigateToApply = () => {
+    window.location.href = "/apply";
+  };
 
   return (
-    <main className="h-screen flex  items-center justify-center bg-gray-50 p-4">
-      <div className="max-w-xl w-full flex flex-col py-32  !h-4/5  rounded-2xl bg-transparent  p-8 space-y-10">
+    <main className="h-full flex flex-col items-center justify-center bg-gray-50 p-4">
+      <div className="max-w-xl mt-16  w-full flex flex-col py-32  rounded-2xl bg-transparent  p-8 space-y-10">
         <h1 className="text-[4rem] leading-[1.25] text-center font-lg text-gray-800 animate-fade-in">
           {" "}
           <span className="font-light">Welcome,</span> {userName}
         </h1>
         <div className="flex justify-around">
-          <Button asChild className="animate-slide-in-left delay-500">
+          <Button
+            asChild
+            className="animate-slide-in-left delay-500 bg-black hover:bg-black"
+            onClick={navigateToEditor}
+          >
             <div className="!p-7">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -36,6 +48,7 @@ const HomePage: FC = () => {
             variant="outline"
             asChild
             className="animate-slide-in-left delay-500"
+            onClick={navigateToApply}
           >
             <div className="!p-7">
               <svg

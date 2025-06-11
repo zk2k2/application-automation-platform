@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import { Copy, Loader2 } from "lucide-react";
 
 interface CommitModalProps {
   isOpen: boolean;
@@ -17,6 +18,7 @@ export function CommitModal({
   latexContent,
 }: CommitModalProps) {
   const [companyName, setCompanyName] = useState("");
+  const [position, setPosition] = useState("");
   const [shareableUrl, setShareableUrl] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -45,27 +47,25 @@ export function CommitModal({
         .replace(/[-:]/g, "")
         .replace(/\.\d+Z$/, "Z");
 
-      const commitMessage = companyName
-        ? `Applying to ${companyName} at ${now}`
-        : `Update resume at ${now}`;
+      let commitMessage = "Update resume at " + now;
+      if (companyName && position) {
+        commitMessage = `Applying to ${companyName} as ${position} at ${now}`;
+      } else if (companyName) {
+        commitMessage = `Applying to ${companyName} at ${now}`;
+      } else if (position) {
+        commitMessage = `Applying as ${position} at ${now}`;
+      }
 
       const response = await fetch("/api/commit-resume", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          latexContent,
-          commitMessage,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ latexContent, commitMessage }),
       });
-
       const data = await response.json();
 
       if (!response.ok) {
         throw new Error(data.error || "Failed to get shareable link");
       }
-
       if (!data.shortUrl) {
         throw new Error("No URL returned from server");
       }
@@ -85,7 +85,6 @@ export function CommitModal({
 
   const handleCopy = () => {
     if (!shareableUrl) return;
-
     navigator.clipboard
       .writeText(shareableUrl)
       .then(() => toast.success("Link copied to clipboard"))
@@ -97,41 +96,47 @@ export function CommitModal({
   return (
     <>
       <div
-        className={`fixed inset-0 bg-gray-600 flex items-center justify-center transition-opacity duration-300 ${
+        className={`fixed inset-0 bg-gray-600 transition-opacity duration-300 ${
           isAnimating ? "opacity-50" : "opacity-0"
         }`}
         onClick={onClose}
       />
 
-      <div className="fixed inset-0 flex items-center justify-center">
+      <div className="fixed inset-0 flex items-center justify-center z-10">
         <div
-          className={`bg-white p-6 rounded-lg shadow-lg z-10 transform transition-all duration-300 ${
+          className={`bg-white p-6 rounded-lg shadow-lg transform transition-all duration-300 ${
             isAnimating ? "scale-100 opacity-100" : "scale-95 opacity-0"
-          }`}
+          } w-full max-w-md`}
         >
-          <h2 className="!text-2xl font-semibold mb-4">Applying somewhere?</h2>
-          <p className="text-md font-normal mb-4">
+          <h2 className="text-2xl font-semibold mb-4">Applying somewhere?</h2>
+          <p className="mb-4">
             Commit your resume changes and get a short shareable URL!
           </p>
 
           {shareableUrl ? (
-            <div>
+            <>
               <p className="mb-2">Your shareable link:</p>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 mb-4">
                 <Input
                   value={shareableUrl}
                   readOnly
-                  className="w-64"
+                  className="w-full"
                   onClick={(e) => (e.target as HTMLInputElement).select()}
                 />
-                <Button onClick={handleCopy}>Copy</Button>
+                <Button variant="outline" onClick={handleCopy}>
+                  <Copy className="h-4 w-4 mr-1" />
+                  Copy
+                </Button>
               </div>
-              <Button onClick={onClose} className="mt-4 w-full">
+              <Button onClick={onClose} className="w-full my-2">
+                Write an e-mail
+              </Button>
+              <Button onClick={onClose} variant="outline" className="w-full">
                 Close
               </Button>
-            </div>
+            </>
           ) : (
-            <div className="">
+            <>
               <Input
                 placeholder="Company you're applying to (optional)"
                 value={companyName}
@@ -139,20 +144,30 @@ export function CommitModal({
                 className="mb-4"
                 onKeyDown={(e) => e.key === "Enter" && handleGetLink()}
               />
+              <Input
+                placeholder="Position title (optional)"
+                value={position}
+                onChange={(e) => setPosition(e.target.value)}
+                className="mb-4"
+                onKeyDown={(e) => e.key === "Enter" && handleGetLink()}
+              />
+
               <div className="flex gap-2 justify-end">
                 <Button onClick={onClose} variant="outline">
                   Cancel
                 </Button>
                 <Button onClick={handleGetLink} disabled={isLoading}>
-                  {isLoading ? "Generating..." : "Get Link"}
+                  Get Link
                 </Button>
               </div>
+
               {isLoading && (
-                <div className="mt-2 text-sm text-gray-500">
-                  This may take a moment...
+                <div className="mt-4 flex items-center text-gray-600">
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  <span>This may take a moment...</span>
                 </div>
               )}
-            </div>
+            </>
           )}
         </div>
       </div>

@@ -1,4 +1,3 @@
-// app/api/send-email/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import sgMail from "@sendgrid/mail";
 
@@ -7,12 +6,10 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY!);
 export async function POST(req: NextRequest) {
   const form = await req.formData();
 
-  // 1) Pull basic fields
   const to = form.get("to")!.toString();
   const subject = form.get("subject")!.toString();
   const text = form.get("body")!.toString();
 
-  // 2) Collect *all* File entries whose key starts with "attachments"
   const attachments: Array<{
     content: string;
     filename: string;
@@ -26,12 +23,9 @@ export async function POST(req: NextRequest) {
   for (const [key, val] of form.entries()) {
     if (key.startsWith("attachments") && val instanceof File) {
       const buf = Buffer.from(await val.arrayBuffer());
-      // original filename, e.g. resume-20250610T165845Z-amazon.pdf
       const originalName = val.name;
-      // extract company from originalName
       const match = originalName.match(/resume-\d+T\d+Z-(.+)\.pdf$/i);
       const company = match ? match[1].toUpperCase() : "";
-      // build new filename
       const newFilename =
         [firstName.toUpperCase(), lastName.toUpperCase(), "RESUME", company]
           .filter(Boolean)
@@ -46,7 +40,6 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  // 3) Send via SendGrid
   try {
     await sgMail.send({
       from: process.env.EMAIL_SENDER!,
@@ -56,8 +49,14 @@ export async function POST(req: NextRequest) {
       attachments,
     });
     return NextResponse.json({ message: "Email sent successfully" });
-  } catch (err: any) {
-    console.error("SendGrid error code:", err.code, err.response?.body);
+  } catch (err: unknown) {
+    if (err && typeof err === "object" && "code" in err) {
+      const error = err as { code?: unknown; response?: { body?: unknown } };
+      console.error("SendGrid error code:", error.code, error.response?.body);
+    } else {
+      console.error("Unknown error occurred while sending email:", err);
+    }
+
     return NextResponse.json({ error: "Send failed" }, { status: 500 });
   }
 }

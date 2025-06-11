@@ -51,7 +51,7 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+  --primary: oklch(0.8019 0.1055 163.89);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -173,4 +173,21 @@ code {
 #latex-editor:focus {
   outline: none;
   box-shadow: none;
+}
+
+/* Override some Prism token colors to green */
+.token.keyword,
+.token.function,
+.token.class-name,
+.token.selector,
+.token.builtin {
+  color: #79d4ac; /* forest green */
+}
+
+/* Optional: tweak background/selection */
+.react-simple-code-editor textarea:focus {
+  outline: none;
+}
+.react-simple-code-editor pre {
+  background: #fdfdfd; /* light background */
 }
