@@ -79,17 +79,26 @@ Ensure you have the following installed:
 ### ⚙️ Backend Workflow (GitHub Actions + AWS)
 
 1. **Set up a private GitHub repository to store LaTeX CVs.**
-2. **Configure GitHub Actions with secrets for AWS credentials.**
-3. **Deploy a self-hosted EC2 runner and ensure it has:**
+   
+3. **Configure an AWS account with a role and a policy.**
+   
+4. **Deploy a self-hosted EC2 runner and ensure it has:**
    * Docker
-   * A working LaTeX Docker image 
-4. **Set up an S3 bucket and a DynamoDB table**
-5. **Set up a Lambda Function:**
+   * A working LaTeX Docker image
+     
+5. **Set up an S3 bucket and a DynamoDB table**
+   
+6. **Set up a Lambda Function:**
    * You can find the lambda code inside the src directory
-6. **Set up the .env and .env.local:**
-   * You can find examples of the two files at the root of the Next.js app
-7. **Setup the workflow at ./.github/main.yml in your resume's repo:**
-   * This will allow the workflow to run on your resume's repo
+     
+7. **Set up the .env and .env.local:**
+   You can find examples of the two files at the root of the Next.js app
+     
+8. **Setup the workflow at ./.github/main.yml in your resume's repo:**
+   This will allow the workflow to run on your resume's repo
+  
+9. **Ready to go! You can automate your way to career stardom 😎**
+ 
      
 ## 🤝 Contributing
 
