@@ -57,7 +57,7 @@ Ensure you have the following installed:
 1. **Clone the repo and navigate to the project:**
 
    ```sh
-   git clone https://github.com/yourusername/sendit.git
+   git clone https://github.com/zk2k2/sendit.git
    cd sendit
    ```
 
@@ -107,16 +107,16 @@ For more information, please contact me via email or connect on LinkedIn.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 
-[contributors-shield]: https://img.shields.io/github/contributors/yourusername/sendit.svg?style=for-the-badge
-[contributors-url]: https://github.com/yourusername/sendit/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/yourusername/sendit.svg?style=for-the-badge
-[forks-url]: https://github.com/yourusername/sendit/network/members
-[stars-shield]: https://img.shields.io/github/stars/yourusername/sendit.svg?style=for-the-badge
-[stars-url]: https://github.com/yourusername/sendit/stargazers
-[issues-shield]: https://img.shields.io/github/issues/yourusername/sendit.svg?style=for-the-badge
-[issues-url]: https://github.com/yourusername/sendit/issues
-[license-shield]: https://img.shields.io/github/license/yourusername/sendit.svg?style=for-the-badge
-[license-url]: https://github.com/yourusername/sendit/blob/main/LICENSE
+[contributors-shield]: https://img.shields.io/github/contributors/zk2k2/sendit.svg?style=for-the-badge
+[contributors-url]: https://github.com/zk2k2/sendit/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/zk2k2/sendit.svg?style=for-the-badge
+[forks-url]: https://github.com/zk2k2/sendit/network/members
+[stars-shield]: https://img.shields.io/github/stars/zk2k2/sendit.svg?style=for-the-badge
+[stars-url]: https://github.com/zk2k2/sendit/stargazers
+[issues-shield]: https://img.shields.io/github/issues/zk2k2/sendit.svg?style=for-the-badge
+[issues-url]: https://github.com/zk2k2/sendit/issues
+[license-shield]: https://img.shields.io/github/license/zk2k2/sendit.svg?style=for-the-badge
+[license-url]: https://github.com/zk2k2/sendit/blob/main/LICENSE
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/your-linkedin-username
 
