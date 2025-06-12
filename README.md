@@ -13,7 +13,7 @@
 
 <div align="center">
   <br>
-  <img src="https://github.com/user-attachments/assets/bb900689-4e31-4e61-a91e-d6a4159785f6" alt="Sendit" width="400">
+  <img src="https://github.com/user-attachments/assets/bb900689-4e31-4e61-a91e-d6a4159785f6" alt="sendit-logo" width="400">
   <br><br>
 </div>
 
@@ -57,8 +57,8 @@ Ensure you have the following installed:
 1. **Clone the repo and navigate to the project:**
 
    ```sh
-   git clone https://github.com/zk2k2/sendit.git
-   cd sendit
+   git clone https://github.com/zk2k2/application-automation-platform.git
+   cd application-automation-platform
    ```
 
 2. **Install dependencies:**
@@ -107,16 +107,16 @@ For more information, please contact me via email or connect on LinkedIn.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 
-[contributors-shield]: https://img.shields.io/github/contributors/zk2k2/sendit.svg?style=for-the-badge
-[contributors-url]: https://github.com/zk2k2/sendit/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/zk2k2/sendit.svg?style=for-the-badge
-[forks-url]: https://github.com/zk2k2/sendit/network/members
-[stars-shield]: https://img.shields.io/github/stars/zk2k2/sendit.svg?style=for-the-badge
-[stars-url]: https://github.com/zk2k2/sendit/stargazers
-[issues-shield]: https://img.shields.io/github/issues/zk2k2/sendit.svg?style=for-the-badge
-[issues-url]: https://github.com/zk2k2/sendit/issues
-[license-shield]: https://img.shields.io/github/license/zk2k2/sendit.svg?style=for-the-badge
-[license-url]: https://github.com/zk2k2/sendit/blob/main/LICENSE
+[contributors-shield]: https://img.shields.io/github/contributors/zk2k2/application-automation-platform.svg?style=for-the-badge
+[contributors-url]: https://github.com/zk2k2/application-automation-platform/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/zk2k2/application-automation-platform.svg?style=for-the-badge
+[forks-url]: https://github.com/zk2k2/application-automation-platform/network/members
+[stars-shield]: https://img.shields.io/github/stars/zk2k2/application-automation-platform.svg?style=for-the-badge
+[stars-url]: https://github.com/zk2k2/application-automation-platform/stargazers
+[issues-shield]: https://img.shields.io/github/issues/zk2k2/application-automation-platform.svg?style=for-the-badge
+[issues-url]: https://github.com/zk2k2/application-automation-platform/issues
+[license-shield]: https://img.shields.io/github/license/zk2k2/application-automation-platform.svg?style=for-the-badge
+[license-url]: https://github.com/zk2k2/application-automation-platform/blob/main/LICENSE
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/your-linkedin-username
 
