@@ -38,6 +38,11 @@ https://github.com/user-attachments/assets/1e316023-1e53-407a-8306-742b86fe2e47
 
 ## 🧱 Architecture
 The architecture of Sendit integrates Next.js, GitHub, Docker, AWS services, and Lambda functions to deliver a seamless CV management and application workflow.
+<div align="center">
+  <br>
+  <img src="https://github.com/user-attachments/assets/e59b97bc-2870-4d9d-8c1a-f18fab0abeef" alt="sendit-architecture" width="400">
+  <br><br>
+</div>
 ![Sendit Architecture](https://github.com/user-attachments/assets/e59b97bc-2870-4d9d-8c1a-f18fab0abeef)
 
 
@@ -49,7 +54,6 @@ Ensure you have the following installed:
 
 * Node.js & npm
 * AWS CLI configured with necessary permissions
-* Docker (for local LaTeX builds if needed)
 * A GitHub account with a private repo containing LaTeX resume template
 
 ### 💻 Frontend Setup
@@ -58,7 +62,7 @@ Ensure you have the following installed:
 
    ```sh
    git clone https://github.com/zk2k2/application-automation-platform.git
-   cd application-automation-platform
+   cd apps/web
    ```
 
 2. **Install dependencies:**
@@ -80,7 +84,7 @@ Ensure you have the following installed:
 3. **Deploy a self-hosted EC2 runner and ensure it has:**
 
    * Docker
-   * LaTeX toolchain
+   * A working LaTeX Docker image 
 4. **Set up the GitHub Actions workflow to:**
 
    * Clone the updated repo
@@ -89,9 +93,7 @@ Ensure you have the following installed:
    * Write metadata to DynamoDB
 5. **Lambda Function:**
 
-   * Fetches the presigned S3 URL
-   * Generates a shortened link
-   * Updates DynamoDB with link and metadata
+   * You can find the lambda code inside the src directory
 
 ## 🤝 Contributing
 
