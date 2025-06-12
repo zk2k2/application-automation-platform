@@ -83,6 +83,10 @@ export function CommitModal({
     }
   };
 
+  const navigateToApply = () => {
+    window.location.href = "/apply";
+  };
+
   const handleCopy = () => {
     if (!shareableUrl) return;
     navigator.clipboard
@@ -128,7 +132,7 @@ export function CommitModal({
                   Copy
                 </Button>
               </div>
-              <Button onClick={onClose} className="w-full my-2">
+              <Button onClick={navigateToApply} className="w-full my-2">
                 Write an e-mail
               </Button>
               <Button onClick={onClose} variant="outline" className="w-full">

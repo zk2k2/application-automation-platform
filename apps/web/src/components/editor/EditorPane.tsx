@@ -53,7 +53,7 @@ export function EditorPane({
     };
 
     fetchResumeFromGitHub();
-  }, [initialContent]);
+  }, []);
 
   useEffect(() => {
     if (!isLoading) {
