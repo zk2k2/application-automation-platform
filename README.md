@@ -81,19 +81,16 @@ Ensure you have the following installed:
 1. **Set up a private GitHub repository to store LaTeX CVs.**
 2. **Configure GitHub Actions with secrets for AWS credentials.**
 3. **Deploy a self-hosted EC2 runner and ensure it has:**
-
    * Docker
    * A working LaTeX Docker image 
-4. **Set up the GitHub Actions workflow to:**
-
-   * Clone the updated repo
-   * Compile `.tex` to PDF inside a Docker container
-   * Upload the result to S3
-   * Write metadata to DynamoDB
-5. **Lambda Function:**
-
+4. **Set up an S3 bucket and a DynamoDB table**
+5. **Set up a Lambda Function:**
    * You can find the lambda code inside the src directory
-
+6. **Set up the .env and .env.local:**
+   * You can find examples of the two files at the root of the Next.js app
+7. **Setup the workflow at ./.github/main.yml in your resume's repo:**
+   * This will allow the workflow to run on your resume's repo
+     
 ## 🤝 Contributing
 
 We welcome contributions to improve Sendit! Fork the repository and submit pull requests for review.
