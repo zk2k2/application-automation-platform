@@ -1,0 +1,100 @@
+name: Build and Upload Resume
+
+on:
+  push:
+    branches: [main]
+    paths: ["**.tex"]
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Extract variables
+        id: vars
+        run: |
+          COMMIT_MSG=$(git log -1 --pretty=%B)
+          TIMESTAMP=$(echo "$COMMIT_MSG" | grep -oE '[0-9]{8}T[0-9]{6}Z')
+          COMPANY=$(echo "$COMMIT_MSG" | sed -E 's/^Applying to (.*) as .* at [0-9TZ]+$/\1/')
+          POSITION=$(echo "$COMMIT_MSG" | sed -E 's/^Applying to .* as (.*) at [0-9TZ]+$/\1/')
+          FILE_COMPANY=$(echo "$COMPANY" | tr -d '[:space:]' | tr '[:lower:]' '[:upper:]')
+          FILE_NAME="RESUME_${FILE_COMPANY}_${TIMESTAMP}.pdf"
+
+          echo "timestamp=$TIMESTAMP" >> $GITHUB_OUTPUT
+          echo "company=$COMPANY" >> $GITHUB_OUTPUT
+          echo "position=$POSITION" >> $GITHUB_OUTPUT
+          echo "filename=$FILE_NAME" >> $GITHUB_OUTPUT
+
+      - name: Compile LaTeX using Dockerized TeX Live
+        run: |
+          mkdir -p output
+          docker run --rm -v $PWD:/work -w /work ghcr.io/xu-cheng/texlive-full \
+            pdflatex -interaction=nonstopmode -output-directory=output resume.tex
+
+      - name: Upload PDF to S3
+        run: |
+          aws s3 cp output/resume.pdf s3://zieds-resume-bucket/resumes/${{ steps.vars.outputs.filename }} --region eu-north-1
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Generate presigned URL
+        id: presign
+        run: |
+          URL=$(aws s3 presign \
+            s3://zieds-resume-bucket/resumes/${{ steps.vars.outputs.filename }} \
+            --expires-in 3600 \
+            --region eu-north-1)
+          echo "presigned_url=$URL" >> $GITHUB_OUTPUT
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Invoke shortenResumeLink Lambda
+        id: invoke
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: eu-north-1
+          LONG_URL: ${{ steps.presign.outputs.presigned_url }}
+        run: |
+          echo "LONG_URL is: $LONG_URL"          
+          PAYLOAD=$(jq -n --arg url "$LONG_URL" \
+            '{ queryStringParameters: { long_url: $url } }')
+          echo "PAYLOAD = $PAYLOAD"
+          aws lambda invoke \
+            --function-name shortenResumeLink \
+            --cli-binary-format raw-in-base64-out \
+            --payload "$PAYLOAD" \
+            response.json \
+            --debug
+
+      - name: Dump & extract short_url
+        id: extract
+        if: always()
+        run: |
+          echo "== response.json =="
+          cat response.json || true
+          RAW_BODY=$(jq -r '.body' response.json)
+          SHORT_URL=$(echo "$RAW_BODY" | jq -r '.short_url')
+          echo "short_url=$SHORT_URL" >> $GITHUB_OUTPUT
+
+      - name: Store resume metadata in DynamoDB
+        run: |
+          aws dynamodb put-item \
+            --table-name ResumeMetadata \
+            --item '{
+              "s3_key":    {"S": "resumes/'"${{ steps.vars.outputs.filename }}"'"},
+              "timestamp": {"S": "'"${{ steps.vars.outputs.timestamp }}"'"},
+              "company":   {"S": "'"${{ steps.vars.outputs.company }}"'"},
+              "position":  {"S": "'"${{ steps.vars.outputs.position }}"'"},
+              "short_url": {"S": "'"${{ steps.extract.outputs.short_url }}"'"}
+            }' \
+            --region $AWS_REGION
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
