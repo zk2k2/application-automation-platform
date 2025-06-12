@@ -40,10 +40,9 @@ https://github.com/user-attachments/assets/1e316023-1e53-407a-8306-742b86fe2e47
 The architecture of Sendit integrates Next.js, GitHub, Docker, AWS services, and Lambda functions to deliver a seamless CV management and application workflow.
 <div align="center">
   <br>
-  <img src="https://github.com/user-attachments/assets/e59b97bc-2870-4d9d-8c1a-f18fab0abeef" alt="sendit-architecture" width="400">
+  <img src="https://github.com/user-attachments/assets/e59b97bc-2870-4d9d-8c1a-f18fab0abeef" alt="sendit-architecture">
   <br><br>
 </div>
-![Sendit Architecture](https://github.com/user-attachments/assets/e59b97bc-2870-4d9d-8c1a-f18fab0abeef)
 
 
 ## 🚀 Getting Started
