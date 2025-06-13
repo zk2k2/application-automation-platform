@@ -12,9 +12,9 @@
 
 # Sendit, The Resume Delivery Platform!
 
-<div align="center" style="background-color: red; padding: 1rem; display: inline-block; border-radius: 8px;">
+<div align="center">
   <br>
-  <img src="https://github.com/user-attachments/assets/bb900689-4e31-4e61-a91e-d6a4159785f6" alt="sendit-logo" width="400">
+  <img src="https://github.com/user-attachments/assets/f8842d5e-e4f1-48a6-8ac8-b1e3d41b835c" alt="sendit-logo" width="400">
   <br><br>
 </div>
 
