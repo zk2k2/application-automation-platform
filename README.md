@@ -126,6 +126,6 @@ For more information, please contact me via email or connect on LinkedIn.
 [license-shield]: https://img.shields.io/github/license/zk2k2/application-automation-platform.svg?style=for-the-badge
 [license-url]: https://github.com/zk2k2/application-automation-platform/blob/main/LICENSE
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/your-linkedin-username
+[linkedin-url]: https://linkedin.com/in/zied-kharrat
 
 ---
