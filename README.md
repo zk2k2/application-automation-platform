@@ -12,9 +12,13 @@
 
 # Sendit, The Resume Delivery Platform!
 
-
-
 Sendit is a Next.js-based platform that streamlines the job application process by integrating a LaTeX CV editor, automated resume generation, and intelligent resume delivery.
+
+<div align="center">
+  <br>
+  <img src="https://github.com/user-attachments/assets/f8842d5e-e4f1-48a6-8ac8-b1e3d41b835c" alt="sendit-logo" width="400">
+  <br><br>
+</div>
 
 ## Demo 🎥
 
